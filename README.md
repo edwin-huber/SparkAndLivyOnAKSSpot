@@ -2,14 +2,14 @@
 
 This repo is collating the work we are doing with a partner to enable their Spark / Livy pipeline to run on Azure Spot instances via AKS.
 
-** Deployment and Configuration
+## Deployment and Configuration
 
   < Place Holder >  
   < Link to CLI and deployment scripts >
   
   https://spark.apache.org/docs/latest/running-on-kubernetes.html
   
- ** Next Steps / POC Items
+ ## Next Steps / POC Items
   - Create private cluster with JIT access jump host behind bastion service (done)
   - Validate basic spark and livy operation in AKS using port forwarding - (done)
   - Image optimization and deployment from Azure Container Registry  
