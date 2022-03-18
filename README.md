@@ -4,8 +4,8 @@ This repo is collating the work we are doing with a partner to enable their Spar
 
 ** Deployment and Configuration
 
-  < Place Holder >
-  < Link to CLI and deployment scripts>
+  < Place Holder >  
+  < Link to CLI and deployment scripts >
   
   https://spark.apache.org/docs/latest/running-on-kubernetes.html
   
