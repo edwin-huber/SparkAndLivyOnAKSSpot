@@ -25,6 +25,7 @@ We used and adapted the information available here to run Livy in AKS:
 - https://spark.apache.org/docs/latest/running-on-kubernetes.html
   
  ## Next Steps / POC Items
+  - Update scripts with VNet Creation, bastion and Jump Host
   - Create private cluster with JIT access jump host behind bastion service (done)
   - Validate basic spark and livy operation in AKS using port forwarding - (done)
   - Image optimization and deployment from Azure Container Registry  
