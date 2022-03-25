@@ -13,9 +13,7 @@ You will need the output from the first script ([0.](/DeploymentScripts/0.create
 These scripts were using the current version of the Azure CLI (2.34.1) at the time of writing.
 Whilst written for PowerShell, we have used Az CLI to easily allow the transfer of this logic to Bash scripts if desired.
 
-This solution relys on the use of Helm Charts to configure a Livy Spark POD, which will start workers running in the AKS spot pools.
-
-The cluster is isolated and on a private network. It uses Azure Bastion and a JIT enabled VM to manage the AKS cluster and container registry.  
+This solution relys on the use of Helm Charts to configure a Livy Spark POD, which will start workers running in the AKS spot pools.The cluster is isolated and on a private network. It uses Azure Bastion and a JIT enabled VM to manage the AKS cluster and container registry.  
 Alternative topologies could use a VPN gateway to access network resources in the protected environment. 
 
 We used and adapted the information available here to run Livy in AKS:
@@ -31,7 +29,8 @@ Useful info:
  ## Next Steps / POC Items
   - Create private cluster with JIT access jump host behind bastion service (done)
   - Validate basic spark and livy operation in AKS using port forwarding - (done)
-  - Update scripts with VNet Creation, bastion and Jump Host (Edwin)
+  - Update scripts with VNet Creation, bastion (done)
+  - Update script to create VM Jump Host (Edwin)
   - Samples / Scripts to start Livy via port forwarding etc. (Edwin)
   - Helm modification to run Livy with Spot Tolerations (Christian)
      => See POD Templates https://spark.apache.org/docs/latest/running-on-kubernetes.html#pod-template
