@@ -20,18 +20,22 @@ Alternative topologies could use a VPN gateway to access network resources in th
 
 We used and adapted the information available here to run Livy in AKS:
 
+Working on AKS: (albeit with older version of livy / spark)
+- https://github.com/anildwarepo/spark-on-aks
+
+Useful info:
 - https://github.com/JahstreetOrg/spark-on-kubernetes-helm 
   
 - https://spark.apache.org/docs/latest/running-on-kubernetes.html
   
  ## Next Steps / POC Items
-  - Update scripts with VNet Creation, bastion and Jump Host
   - Create private cluster with JIT access jump host behind bastion service (done)
   - Validate basic spark and livy operation in AKS using port forwarding - (done)
-  - Image optimization and deployment from Azure Container Registry  
+  - Update scripts with VNet Creation, bastion and Jump Host (Edwin)
+  - Helm modification to run Livy with Spot Tolerations (Christian)
+     => See POD Templates https://spark.apache.org/docs/latest/running-on-kubernetes.html#pod-template
+  - Creation of Ingress and Private Link Service  (Edwin)
+     => https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview
+  - Image optimization and deployment from Azure Container Registry (Lowest prio) 
      => Do not build in DockerFile! Copy Livy from release!
      => https://docs.microsoft.com/en-us/azure/container-registry/container-registry-private-link
-  - Helm modification to run Livy with Spot Tolerations  
-     => See POD Templates https://spark.apache.org/docs/latest/running-on-kubernetes.html#pod-template
-  - Creation of Ingress and Private Link Service  
-     => https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview
