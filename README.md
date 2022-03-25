@@ -32,6 +32,7 @@ Useful info:
   - Create private cluster with JIT access jump host behind bastion service (done)
   - Validate basic spark and livy operation in AKS using port forwarding - (done)
   - Update scripts with VNet Creation, bastion and Jump Host (Edwin)
+  - Samples / Scripts to start Livy via port forwarding etc. (Edwin)
   - Helm modification to run Livy with Spot Tolerations (Christian)
      => See POD Templates https://spark.apache.org/docs/latest/running-on-kubernetes.html#pod-template
   - Creation of Ingress and Private Link Service  (Edwin)
