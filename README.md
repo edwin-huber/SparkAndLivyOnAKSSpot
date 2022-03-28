@@ -39,7 +39,6 @@ helm install livy -n livy <path-to-repo>/charts/livy --set rbac.create=true
 ```
 kubectl port-forward -n livy livy-0 8998:8998 &
 ```
-
 ## Usage
 1. Create interactive session
 ``````
