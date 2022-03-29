@@ -26,6 +26,44 @@ Useful info:
   
 - https://spark.apache.org/docs/latest/running-on-kubernetes.html
   
+- Livy API documentation: https://livy.incubator.apache.org/docs/latest/rest-api.html
+
+1. Build the spark and the livy docker image by filling in your docker registry in the `acrbuild.sh` script in the `DockerImage/spark` as well as `DockerImage/livy` image
+2. Run both `acrbuild.sh` scripts to build and push the docker images
+3. Install the livy helm chart
+```
+kubectl create namespace livy
+helm install livy -n livy <path-to-repo>/charts/livy --set rbac.create=true
+```
+4. Forward port to localhost
+```
+kubectl port-forward -n livy livy-0 8998:8998 &
+```
+
+## Usage
+1. Create interactive session
+``````
+curl -L -X POST 'http://localhost:8998/sessions ' -H 'Content-Type: application/json' --data-raw '{
+  "conf": {
+    "spark.kubernetes.executor.podTemplateFile": "/opt/livy/work-dir/executor-pod-template.yaml",
+    "spark.kubernetes.driver.podTemplateFile": "/opt/livy/work-dir/driver-pod-template.yaml"
+  },
+  "kind": "spark"
+}
+'
+``````
+2. Create statement
+``````
+curl -L -X POST 'localhost:8998/sessions/:session_id/statements' -H 'Content-Type: application/json' --data-raw '{
+   "code": "sc.parallelize(1 to 10).count()"
+}
+'
+``````
+3. Get result
+``````
+curl -L -X GET 'localhost:8998/sessions/:session_id/statements/:statement_id'
+``````
+
  ## Next Steps / POC Items
   - Create private cluster with JIT access jump host behind bastion service (done)
   - Validate basic spark and livy operation in AKS using port forwarding - (done)
