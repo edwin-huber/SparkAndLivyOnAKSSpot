@@ -33,7 +33,7 @@ Useful info:
 3. Install the livy helm chart
 ```
 kubectl create namespace livy
-helm install livy -n livy ./ --set rbac.create=true
+helm install livy -n livy <path-to-repo>/charts/livy --set rbac.create=true
 ```
 4. Forward port to localhost
 ```
