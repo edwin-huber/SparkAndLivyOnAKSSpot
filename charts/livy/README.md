@@ -9,8 +9,8 @@ The following tables lists the configurable parameters of the Apache Livy server
 
 | Parameter                            | Description                                                      |Default                                                                                                                         |
 | ------------------------------------ |----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| image.repository | Repository for Livy | `sasnouskikh/livy` |
-| image.tag | Tag for Livy | `0.8.0-incubating-spark_3.0.1_2.12-hadoop_3.2.0_cloud` |
+| image.repository | Repository for Livy | `<your-docker-registry>/livy` |
+| image.tag | Tag for Livy | `1.0` |
 | image.pullPolicy | Pull policy for Livy | `IfNotPresent` |
 | nameOverride | Provide a name in place of livy | `""` |
 | fullnameOverride | Provide a name to substitute for the full names of resources | `""` |
