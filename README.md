@@ -28,6 +28,18 @@ Useful info:
   
 - Livy API documentation: https://livy.incubator.apache.org/docs/latest/rest-api.html
 
+1. Build the spark and the livy docker image by filling in your docker registry in the `acrbuild.sh` script in the `DockerImage/spark` as well as `DockerImage/livy` image
+2. Run both `acrbuild.sh` scripts to build and push the docker images
+3. Install the livy helm chart
+```
+kubectl create namespace livy
+helm install livy -n livy ./ --set rbac.create=true
+```
+4. Forward port to localhost
+```
+kubectl port-forward -n livy livy-0 8998:8998 &
+```
+
 ## Usage
 1. Create interactive session
 ``````
