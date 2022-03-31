@@ -1,4 +1,0 @@
-This file contains changes to files in this directory, taken from https://github.com/anildwarepo/spark-on-aks/blob/b7888394b62d9980ff7265b96ee289ed031cf9d7/spark/.
- - Dockerfile was edited (new binary link)
- - acrbuild.sh was edited (new image tag)
- - driver-pod-template.yaml and executor-pod-template.yaml were changed (new image + node tolerations)

@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
     - name: spark
-      image: <your-container-registry>/spark:3.0.3
+      image: sasnouskikh/livy-spark:0.8.0-incubating-spark_3.0.1_2.12-hadoop_3.2.0_cloud
       imagePullPolicy: Always
   tolerations:
   - key: "kubernetes.azure.com/scalesetpriority"
