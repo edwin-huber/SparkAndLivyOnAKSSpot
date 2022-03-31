@@ -28,8 +28,10 @@ Useful info:
   
 - Livy API documentation: https://livy.incubator.apache.org/docs/latest/rest-api.html
 
-1. Build the spark and the livy docker image by filling in your docker registry in the `acrbuild.sh` script in the `DockerImage/spark` as well as `DockerImage/livy` image
-2. Run both `acrbuild.sh` scripts to build and push the docker images
+- Docker image used for spark driver and executor and livy base image: https://github.com/JahstreetOrg/spark-on-kubernetes-docker
+
+1. Build the livy docker image by filling in your docker registry in the `acrbuild.sh` script in the `DockerImage/spark` directory
+2. Run the `acrbuild.sh` script
 3. Install the livy helm chart
 ```
 kubectl create namespace livy
@@ -39,9 +41,8 @@ helm install livy -n livy <path-to-repo>/charts/livy --set rbac.create=true
 ```
 kubectl port-forward -n livy livy-0 8998:8998 &
 ```
-
 ## Usage
-1. Create interactive session
+1. To create interactive session, shh into the kubectl machine and run the following rest call
 ``````
 curl -L -X POST 'http://localhost:8998/sessions ' -H 'Content-Type: application/json' --data-raw '{
   "conf": {
@@ -63,7 +64,10 @@ curl -L -X POST 'localhost:8998/sessions/:session_id/statements' -H 'Content-Typ
 ``````
 curl -L -X GET 'localhost:8998/sessions/:session_id/statements/:statement_id'
 ``````
-
+4. Delete session
+```
+curl -X DELETE 'localhost:8998/sessions/:session_id'
+```
  ## Next Steps / POC Items
   - Create private cluster with JIT access jump host behind bastion service (done)
   - Validate basic spark and livy operation in AKS using port forwarding - (done)
