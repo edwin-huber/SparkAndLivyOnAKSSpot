@@ -28,7 +28,7 @@ Useful info:
   
 - Livy API documentation: https://livy.incubator.apache.org/docs/latest/rest-api.html
 
-- Docker Image used for spark driver and executor and livy base image: https://github.com/JahstreetOrg/spark-on-kubernetes-docker
+- Docker image used for spark driver and executor and livy base image: https://github.com/JahstreetOrg/spark-on-kubernetes-docker
 
 1. Build the livy docker image by filling in your docker registry in the `acrbuild.sh` script in the `DockerImage/spark` directory
 2. Run the `acrbuild.sh` script
