@@ -5,6 +5,9 @@ spec:
     - name: spark
       image: sasnouskikh/livy-spark:0.8.0-incubating-spark_3.0.1_2.12-hadoop_3.2.0_cloud
       imagePullPolicy: Always
+      volumeMounts:
+        - mountPath: "/mnt/spotshare"
+          name: my-pv
   tolerations:
   - key: "kubernetes.azure.com/scalesetpriority"
     operator: "Equal"
@@ -19,4 +22,7 @@ spec:
             operator: In
             values:
             - "spot"
-
+  volumes:
+  - name: my-pv
+    persistentVolumeClaim:
+      claimName: azurefile
