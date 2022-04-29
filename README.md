@@ -13,8 +13,10 @@ You will need the output from the first script ([0.](/DeploymentScripts/0.create
 These scripts were using the current version of the Azure CLI (2.34.1) at the time of writing.
 Whilst written for PowerShell, we have used Az CLI to easily allow the transfer of this logic to Bash scripts if desired.
 
-This solution relys on the use of Helm Charts to configure a Livy Spark POD, which will start workers running in the AKS spot pools.The cluster is isolated and on a private network. It uses Azure Bastion and a JIT enabled VM to manage the AKS cluster and container registry.  
-Alternative topologies could use a VPN gateway to access network resources in the protected environment. 
+This solution relies on the use of Helm Charts to configure a Livy Spark POD, which will start workers running in the AKS spot pools.The cluster is isolated and on a private network. It uses Azure Bastion and a JIT enabled VM to manage the AKS cluster and container registry.  
+Alternative topologies could use a VPN gateway to access network resources in the protected environment.
+
+The usage of a k8s persistent volume provides the spark driver and executor pods access to files on an Azure file share if needed.
 
 We used and adapted the information available here to run Livy in AKS:
 
@@ -28,9 +30,11 @@ Useful info:
   
 - Livy API documentation: https://livy.incubator.apache.org/docs/latest/rest-api.html
 
+- Livy Examples: https://livy.incubator.apache.org/examples/
+
 - Docker image used for spark driver and executor and livy base image: https://github.com/JahstreetOrg/spark-on-kubernetes-docker
 
-1. Build the livy docker image by filling in your docker registry in the `acrbuild.sh` script in the `DockerImage/spark` directory
+1. Build the livy docker image by filling in your docker registry in the `acrbuild.sh` script in the `DockerImage/livy` directory
 2. Run the `acrbuild.sh` script
 3. Install the livy helm chart
 ```
@@ -41,22 +45,42 @@ helm install livy -n livy <path-to-repo>/charts/livy --set rbac.create=true
 ```
 kubectl port-forward -n livy livy-0 8998:8998 &
 ```
+If you want to use persistent volumes to share data with the spark driver and executor, continue with the following steps to setup this up with Azure FileShare:
+
+5. Create an Azure fileShare in the Azure portal or with the manual provided in the [documentation](https://docs.microsoft.com/en-us/azure/aks/azure-files-volume)
+6. Make sure to deploy the persistent volume as well as the persistent volume claim. Simply run:
+````
+kubectl apply -f deployment_files/persistent_volume.yaml
+`````
+7. Deploy Ingress
+When using the livy cluster with an external client, access through an Ingress controller is needed.
+To install the controller run:
+````
+kubectl apply -f deployment_files/nginx-controller-deploy.yaml
+`````
+````
+kubectl apply -f deployment_files/nginx-controller.yaml
+`````
 ## Usage
-1. To create interactive session, shh into the kubectl machine and run the following rest call
+The recommended way of using the livy cluster is by connecting to the cluster with JupyterLab from a different client which makes especially running python statements easier because of indentation. The host address needs to be changed accordingly when using livy from a different client.
+These steps illustrate running a sample scala spark session and submitting a statement. 
+1. To create interactive session, shh into the kubectl machine and run the following REST call. 
 ``````
 curl -L -X POST 'http://localhost:8998/sessions ' -H 'Content-Type: application/json' --data-raw '{
   "conf": {
     "spark.kubernetes.executor.podTemplateFile": "/opt/livy/work-dir/executor-pod-template.yaml",
-    "spark.kubernetes.driver.podTemplateFile": "/opt/livy/work-dir/driver-pod-template.yaml"
+    "spark.kubernetes.driver.podTemplateFile": "/opt/livy/work-dir/driver-pod-template.yaml",
+    "spark.pyspark.python": <path-to-python-binary>,
+    "spark.pyspark.driver.python": <path-to-python-binary> 
   },
-  "kind": "spark"
+  "kind": "spark" # change this to "pyspark" when using python
 }
 '
 ``````
-2. Create statement
+2. Create statement. 
 ``````
 curl -L -X POST 'localhost:8998/sessions/:session_id/statements' -H 'Content-Type: application/json' --data-raw '{
-   "code": "sc.parallelize(1 to 10).count()"
+  "code": "sc.parallelize(1 to 10).count()"
 }
 '
 ``````
